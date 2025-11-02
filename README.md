@@ -20,7 +20,8 @@ Steps:
 3. Commit and push your changes to GitHub.
 
 🎉 Once your code is pushed, your project is now accessible to Render!
-
+Bonus tip - you can simple click "New Repository" then click on "Import a Repository" and use the following link https://github.com/FluffFaceYeti/CustomAPICommands---Tested-for-StreamElements-Fossabot
+Simply give it a name and Github will pull all the files over for you!
 ----------------------------------------------------
 2. DEPLOY ON RENDER
 ----------------------------------------------------
