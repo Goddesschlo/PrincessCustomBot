@@ -38,9 +38,9 @@ Steps:
 
 Then set up your service like this:
 
-Environment: Node
-Build Command: npm install
-Start Command: npm start
+- Environment: Node
+- Build Command: npm install
+- Start Command: npm start
 
 Once everything looks good, click “Create Web Service.”
 
