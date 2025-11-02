@@ -1,0 +1,12 @@
+{
+  "name": "customapi-core",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "CustomAPICore.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "start": "node CustomAPICore.js"
+  }
+}
