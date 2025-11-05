@@ -129,9 +129,9 @@ Each mini-game is assigned to a function (e.g., rockPaperScissors) and is trigge
 How to add:
 
 To add a new mini-game, simply list the game and its corresponding function in the miniGames block. For instance:
-
+```yaml
 miniGames.newGame = newGameFunction;
-
+```
 
 No other code changes are needed beyond that.
 
@@ -147,15 +147,14 @@ The bot checks if the user is a special user and then displays a personalized me
 How to add:
 
 To add a new special user, simply add their name and custom messages under specialUsers:
-
+```yaml
 specialUsers: {
   newuser123: { 
     compliment: "@newuser123, you're a legend! 🌟", 
     funFact: "@newuser123, did you know you have the fastest reflexes? 🦸‍♂️",
   }
 }
-
-
+```
 This will create personalized responses for newuser123.
 
 😂 Jokes
@@ -170,7 +169,7 @@ Each joke category contains a list of jokes. The bot picks one from the appropri
 How to add:
 
 To add a new joke, simply go to the jokes block and add the new category (e.g., low, medium, high) with the jokes.
-
+```yaml
 jokes: {
   newuser123: {
     low: ["You look like you're ready to conquer the world! 💪", "Such a legend... just like your username. 😎"],
@@ -178,7 +177,7 @@ jokes: {
     high: ["You're a rockstar! 🎸", "Superstar vibes coming through! 🌟"]
   }
 }
-
+```
 
 Now, when newuser123 interacts, the bot will pick a joke based on the user's level.
 
@@ -194,7 +193,7 @@ The bot generates a random value within the specified range (min to max) for eac
 How to add:
 
 To add a new stat, add it to the stats block with its range (min, max) and levels. For example, adding a "strength" stat:
-
+```yaml
 stats: {
   strength: { 
     min: 1, 
@@ -205,7 +204,7 @@ stats: {
     unitSpace: false 
   }
 }
-
+```
 
 This will track the user’s "strength" and assign them a value between 1 and 100.
 
@@ -221,11 +220,11 @@ When a user performs an interaction, the bot randomly generates a value (e.g., "
 How to add:
 
 To add a new interaction, simply add the name of the action to the interactions array:
-
+```yaml
 interactions: [
   "tickle"
 ]
-
+```
 
 Now, users can choose “tickle” as an interaction, and the bot will create a response for it.
 
@@ -241,9 +240,9 @@ The .replace() function checks if the action corresponds to a specific word (e.g
 How to add:
 
 To add a new interaction replacement, simply add a new .replace() line in the actionWord part of the code. For example, to replace “tickle” with a full sentence:
-
+```yaml
 .replace("tickle", "tickled")
-
+```
 
 This ensures the message becomes something like "User1 tickled User2 with 70% power!"
 
@@ -259,7 +258,7 @@ The bot randomly or based on performance selects a user for "Show of the Day" an
 How to add:
 
 To create a new "Show of the Day", define a new category like the "daddy" stat, and generate a response for the winner. Here’s an example of how to do it:
-```
+```yaml
 if (type === "showoftheday") {
   const cfg = personality.showoftheday;
   const value = generateValue(seed, type, cfg.max, cfg.min, sender);
