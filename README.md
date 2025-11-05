@@ -259,7 +259,7 @@ The bot randomly or based on performance selects a user for "Show of the Day" an
 How to add:
 
 To create a new "Show of the Day", define a new category like the "daddy" stat, and generate a response for the winner. Here’s an example of how to do it:
-
+```
 if (type === "showoftheday") {
   const cfg = personality.showoftheday;
   const value = generateValue(seed, type, cfg.max, cfg.min, sender);
@@ -283,7 +283,7 @@ if (type === "showofthedaywinner") {
   return res.send(winner ? `🌟 The Show of the Day is ${formatDisplayName(winner.user)}!` : "There is no Show of the Day yet!");
 }
 
-
+```
 This checks for the winner each day and announces them as the "Show of the Day".
 
 📋 Summary
