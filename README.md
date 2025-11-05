@@ -1,5 +1,5 @@
 
-DEPLOYING YOUR CUSTOMAPICORE USING RENDER
+DEPLOYING YOUR CUSTOM APICORE USING RENDER
 ====================================================
 
 Bring your API to life on the web in just a few minutes! 
@@ -22,8 +22,8 @@ Steps:
 🎉 Once your code is pushed, your project is now accessible to Render!
 
 🎉 Bonus tip 
-- you can simple click "New Repository" then click on "Import a Repository" and use the following link https://github.com/FluffFaceYeti/CustomAPICommands---Tested-for-StreamElements-Fossabot
-- Simply give it a name and Github will pull all the files over for you!
+- You can simply click "New Repository," then click on "Import a Repository" and use the following link https://github.com/FluffFaceYeti/CustomAPICommands---Tested-for-StreamElements-Fossabot
+- Simply give it a name and GitHub will pull all the files over for you!
 ----------------------------------------------------
 2. DEPLOY ON RENDER
 ----------------------------------------------------
@@ -95,30 +95,32 @@ QUICK RECAP
 
 While this file is free to use:
 
-- Sometime has been spent on it ensuring it is simple and easy to follow.
-- It will allow you to have commands with stored replies as well as optional things such as spaces and jokes.
-- If you feel like sending a small thank you tip you can do so here.
-- If you feel like sending a small thank you tip you can do so here.
+- Some time has been spent on it, ensuring it is simple and easy to follow.
+- It will allow you to have commands with stored replies, as well as optional things such as spaces and jokes.
+- If you feel like sending a small thank-you tip, you can do so here.
+- If you feel like sending a small thank-you tip, you can do so here.
 - https://streamelements.com/FluffFaceYeti/tip
 
 ----------------------------------------------------
 5. OnRender shuts down after 15 minutes of no activity?
 ----------------------------------------------------
-- The free version does that, But there is a way to trick it!
+- The free version does that, but there is a way to trick it!
 - Create a StreamElements Timer 
-- Have the timer run ever 10 minutes when you are live 
+- Have the timer run every 10 minutes when you are live 
 - have the response be $(urlfetch https://yourusername.onrender.com/ping)
-- So if your OnRender service is called waffles it would be $(urlfetch https://waffles.onrender.com/ping)
+- So if your OnRender service is called waffles, it would be $(urlfetch https://waffles.onrender.com/ping)
 - Set the chat lines to zero
 - StreamElements will now ping your service every 10 minutes. Stopping the service from shutting down while you are live. 
-----------------------------------------------------
 
-Bot Customization Guide
+----------------------------------------------------
+6. BOT CUSTOMIZATION GUIDE
+----------------------------------------------------
 
 This guide provides instructions on how to customize the bot to make it more interactive, fun, and personalized for users.
 
+----------------------------------------------------
 🕹️ Mini-Games
-What it is:
+----------------------------------------------------
 
 Mini-games are small games that users can play with the bot, such as Rock Paper Scissors or Dice Roll. Each mini-game has its own set of rules.
 
@@ -128,15 +130,47 @@ Each mini-game is assigned to a function (e.g., rockPaperScissors) and is trigge
 
 How to add:
 
-To add a new mini-game, simply list the game and its corresponding function in the miniGames block. For instance:
+To add a new mini-game, simply list the game and its corresponding function in the miniGames block. please use other games for references For instance:
+
 ```yaml
-miniGames.newGame = newGameFunction;
+const miniGames = {
+rps: rockPaperScissors,
+tugofwar: tugOfWar,
+diceroll: diceRoll,
+coinflip: coinFlip,
+rpsls: rpsls,
+highorlow: highOrLow,
+newgame : newgame,
+};
+```
+to add the game to your minigame list 
+
+```yaml
+// newgame
+function rockPaperScissors(sender, target) {
+const choices = ["bacon", "eggs", "pancakes", "sausage"];
+const senderMove = pickRandom(choices); // Bot decides the sender's move
+const targetMove = pickRandom(choices); // Bot decides the target's move
+
+if (senderMove === targetMove) {
+return `${sender}, it's a tie with ${target}! Both chose ${senderMove}.`;
+}
+if (
+(senderMove === "bacon" && targetMove === "sausage") ||
+(senderMove === "pancakes" && targetMove === "bacon") ||
+(senderMove === "eggs" && targetMove === "pancakes")
+) {
+return `${sender} wins! ${senderMove} beats ${targetMove}.`;
+}
+return `${target} wins! ${targetMove} beats ${senderMove}.`;
+}
 ```
 
-No other code changes are needed beyond that.
+You now have a breakfast-themed Rock Paper Scissors game.
 
+----------------------------------------------------
 🌟 Special Users
-What it is:
+----------------------------------------------------
 
 Special users are individuals who have personalized messages or actions when they interact with the bot. These users might receive compliments, jokes, or special interactions.
 
@@ -147,18 +181,20 @@ The bot checks if the user is a special user and then displays a personalized me
 How to add:
 
 To add a new special user, simply add their name and custom messages under specialUsers:
+
 ```yaml
-specialUsers: {
-  newuser123: { 
-    compliment: "@newuser123, you're a legend! 🌟", 
-    funFact: "@newuser123, did you know you have the fastest reflexes? 🦸‍♂️",
-  }
-}
+const specialUsers = {
+newuser123: {
+beard: "@newuser123, your beard is majestic like a wizard!",
+hair: "@newuser123, LUL You have no hair silly",
+},
 ```
+
 This will create personalized responses for newuser123.
 
+----------------------------------------------------
 😂 Jokes
-What it is:
+----------------------------------------------------
 
 Jokes are humorous messages that the bot sends during interactions. These jokes are categorized by different levels (low, medium, high), based on the user's actions or stats.
 
@@ -169,20 +205,43 @@ Each joke category contains a list of jokes. The bot picks one from the appropri
 How to add:
 
 To add a new joke, simply go to the jokes block and add the new category (e.g., low, medium, high) with the jokes.
+
+The way the code pulls in the joke from the Jokes Library is as follows.
+
 ```yaml
-jokes: {
-  newuser123: {
-    low: ["You look like you're ready to conquer the world! 💪", "Such a legend... just like your username. 😎"],
-    medium: ["You’re definitely on the rise! 🔥", "I see the glow-up happening. 💖"],
-    high: ["You're a rockstar! 🎸", "Superstar vibes coming through! 🌟"]
-  }
+function getJoke(req, type, value) {
+const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";
+if (!isJokeEnabled(req, type)) return "";
+if (!jokes[type] || !jokes[type][level]) return "";
+return " " + pickRandom(jokes[type][level]);
 }
+``` 
+This line of code tells the script to run "function getJoke(req, type, value) {const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";"
+As seen below the script will run !sleep and if the persons replies are as followed the jokes will be selected from Low, Medium and High.
+
+```yaml
+sleep: { min: 0, max: 100, levels: [30, 70], label: "sleep needed", unit: "%", unitSpace: false },
+sleep: is the cost identity label
+min: 0, max: 100, are the minimum and maximum values
+levels: [30, 70] this is the key part for the jokes. Anything below 30% is a Low joke, Anything from 31-70% is a Medium Joke, Anything 71-100% is a High joke.
+label: "sleep needed" how the bot writes the value in chat "your SLEEP NEEDED is 16% today! You’re well-rested — alert and ready. 🦸"
+unit: "%" the measurement value. This can be anything you want! yes it can even be a custom value such as hair or doodles.
+unitSpace: false this simply means do you want a space after the unit so 16% would become 16 %. Some readings look better with spaces so I added this as an option
+```
+And then the joke will be called from this list. Feel free to make this your own. 
+
+```yaml
+sleep: {
+low: ["You’re well-rested — alert and ready. 🦸", "You don’t need much sleep today. 😎"],
+medium: ["You could use a nap later. 💤", "You’re doing fine, but bed is calling. 🛏️"],
+high: ["You desperately need sleep. 😴", "Someone get you a pillow immediately. 🛌"],
 ```
 
 Now, when newuser123 interacts, the bot will pick a joke based on the user's level.
 
+----------------------------------------------------
 📊 Stats
-What it is:
+----------------------------------------------------
 
 Stats are attributes like “beard length”, “hair length”, or “strength” that are tracked for each user. These stats have a minimum, maximum, and sometimes levels (e.g., 10 cm, 20 cm, 60 cm).
 
@@ -192,29 +251,33 @@ The bot generates a random value within the specified range (min to max) for eac
 
 How to add:
 
-To add a new stat, add it to the stats block with its range (min, max) and levels. For example, adding a "strength" stat:
+To add a new stat, add it to the stats block with its range (min, max) and levels. For example, adding a "fart" stat:
 ```yaml
-stats: {
-  strength: { 
-    min: 1, 
-    max: 100, 
-    levels: [20, 50, 80], 
-    unit: "kg", 
-    label: "strength", 
-    unitSpace: false 
-  }
-}
+const stats = {
+beard: { min: 1, max: 30, levels: [5, 15], unit: "cm", label: "beard", unitSpace: false },
+hair: { min: 10, max: 100, levels: [20, 60], unit: "cm", label: "hair", unitSpace: false },
+pp: { min: 4, max: 15, levels: [6, 10], unit: "inches", label: "pp", unitSpace: false },
+bb: {
+label: "boob size",
+type: "bra", // custom type flag for special generation
+bands: [30, 32, 34, 36, 38, 40, 42],
+cups: ["A", "B", "C", "D", "DD", "E", "F"],
+unitSpace: false
+},
+fart: { min: 1, max: 30, levels: [5, 15], unit: "cm", label: "beard", unitSpace: false },
+};                                 
 ```
 or 
 
 ```yaml
-bunny: { min: 1, max: 30, levels: [5, 15], unit: "cm", label: "Bunny Size", unitSpace: false },
+wetfart: { min: 1, max: 30, levels: [5, 15], unit: "cm", label: "Bunny Size", unitSpace: false },
 ```
 
-This will track the user’s "strength" and assign them a value between 1 and 100.
+This will track the user’s "fart" and assign them a value between 1 and 100.
 
+----------------------------------------------------
 🤝 Interactions
-What it is:
+----------------------------------------------------
 
 Interactions are actions like “hug”, “kiss”, or “slap” that users can perform. The bot generates a response based on the action, such as "User1 hugged User2 with 50% power."
 
@@ -225,16 +288,30 @@ When a user performs an interaction, the bot randomly generates a value (e.g., "
 How to add:
 
 To add a new interaction, simply add the name of the action to the interactions array:
+
 ```yaml
-interactions: [
-  "tickle"
-]
+const interactions = [
+"bonk",
+"boop",
+"fliptable",
+"highfive",
+"hug",
+"kiss",
+"love",
+"pat",
+"slap",
+"spank",
+"throwshoe",
+"tickle",
+"poke",
+];
 ```
 
 Now, users can choose “tickle” as an interaction, and the bot will create a response for it.
 
+----------------------------------------------------
 🔄 Replacing Text in Interactions
-What it is:
+----------------------------------------------------
 
 The .replace() function allows you to modify how interactions are displayed. For example, “throwshoe” is replaced with “threw a shoe at”, making the response sound more natural.
 
@@ -248,11 +325,30 @@ To add a new interaction replacement, simply add a new .replace() line in the ac
 ```yaml
 .replace("tickle", "tickled")
 ```
+The block of code to do this is near the bottom and looks like this. 
+
+```yaml
+if (interactions.includes(type)) {
+value = generateValue(seed, type, 100, 1, sender);
+const actionWord = type
+.replace("throwshoe", "threw a shoe at")
+.replace("fliptable", "flipped a table")
+.replace("highfive", "high-fived")
+.replace("love", "sent love to")
+.replace("bonk", "bonked")
+.replace("boop", "booped")
+.replace("hug", "hugged")
+.replace("kiss", "kissed")
+.replace("pat", "patted")
+.replace("slap", "slapped")
+.replace("spank", "spanked");
+```
 
 This ensures the message becomes something like "User1 tickled User2 with 70% power!"
 
+----------------------------------------------------
 🌟 Creating "Show of the Day"
-What it is:
+----------------------------------------------------
 
 "Show of the Day" is a special feature that highlights a user or value for the day. For example, a user could be selected as "Daddy of the Day" based on a fun stat or interaction.
 
@@ -263,6 +359,7 @@ The bot randomly or based on performance selects a user for "Show of the Day" an
 How to add:
 
 To create a new "Show of the Day", define a new category like the "daddy" stat, and generate a response for the winner. Here’s an example of how to do it:
+
 ```yaml
 if (type === "showoftheday") {
   const cfg = personality.showoftheday;
@@ -286,23 +383,47 @@ if (type === "showofthedaywinner") {
   const winner = aspectsOfTheDay.showoftheday[today];
   return res.send(winner ? `🌟 The Show of the Day is ${formatDisplayName(winner.user)}!` : "There is no Show of the Day yet!");
 }
-
 ```
 This checks for the winner each day and announces them as the "Show of the Day".
 
-📋 Summary
+----------------------------------------------------
+Note: to add values into the "of the day" items, please find this line of code and change it to suit your needs.
+----------------------------------------------------
+```yaml
+const aspectsOfTheDay = { daddy: {}, pp: {}, bb: {}, princess: {}, goodgirl: {} }; // storage for "of the Day"
+```
+So to add something, it would become.
 
-To add a new feature (like a special user, joke, stat, or mini-game):
+```yaml
+const aspectsOfTheDay = { daddy: {}, pp: {}, bb: {}, princess: {}, goodgirl: {}, something: {} }; // storage for "of the Day"
+```
+This way, the bot will only store selected values to ensure it is not saving every single command. 
 
-Find the relevant block (e.g., specialUsers, jokes, stats, interactions).
+----------------------------------------------------
+YOU CAN NOW CUSTOMIZE THE BOT AND MAKE IT MORE ENGAGING FOR YOUR CHAT!
+----------------------------------------------------
 
-Add your new item to the corresponding block (no need to modify any code outside that).
+----------------------------------------------------
+LINK EXAMPLES
+----------------------------------------------------
 
-The bot will handle the rest automatically!
+----------------------------------------------------
+ADDING JOKES 
+----------------------------------------------------
 
-This way, you can customize the bot and make it more engaging for users.
+to add jokes to any link (Make sure that the command has jokes in the Jokes Library)
+Change the link as follows
 
-link examples
+```yaml
+Beard:
+${customapi.https://yourusername.onrender.com?sender=${sender}&type=beard}
+```
+to
+
+```yaml
+Beard:
+${customapi.https://yourusername.onrender.com?sender=${sender}&type=beard&jokes=true}
+```
 
 📊 STATS
 
@@ -495,8 +616,18 @@ ${customapi.https://yourusername.onrender.com?sender=${sender}&type=spank}
 Throw Shoe:
 ${customapi.https://yourusername.onrender.com?sender=${sender}&type=throwshoe}
 
-MiniGames Example
-(Rock Paper Scissors)
+----------------------------------------------------
+TARGETED LINKS
+----------------------------------------------------
+
+These links are slightly different as they include a target
+
+----------------------------------------------------
+Rock Paper Scissors
+----------------------------------------------------
+
+Note: Jokes for these blocks are pre-implemented, so the link does not need to contain &jokes=true
+
 rps: 
 ${customapi.https://yourusername.onrender.com?sender=${sender}&user=${user}&type=rps}
 
