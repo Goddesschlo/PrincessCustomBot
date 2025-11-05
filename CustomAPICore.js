@@ -142,102 +142,101 @@ highorlow: highOrLow,
 
 // Rock Paper Scissors
 function rockPaperScissors(sender, target) {
-const choices = ["rock", "paper", "scissors"];
-const senderMove = pickRandom(choices); // Bot decides the sender's move
-const targetMove = pickRandom(choices); // Bot decides the target's move
+  const choices = ["rock", "paper", "scissors"];
+  const senderMove = pickRandom(choices); // Bot decides the sender's move
+  const targetMove = pickRandom(choices); // Bot decides the target's move
 
-if (senderMove === targetMove) {
-return `${sender}, it's a tie with ${target}! Both chose ${senderMove}.`;
-}
-if (
-(senderMove === "rock" && targetMove === "scissors") ||
-(senderMove === "paper" && targetMove === "rock") ||
-(senderMove === "scissors" && targetMove === "paper")
-) {
-return `${sender} wins! ${senderMove} beats ${targetMove}.`;
-}
-return `${target} wins! ${targetMove} beats ${senderMove}.`;
+  if (senderMove === targetMove) {
+    return `${sender}, it's a tie with ${target}! Both chose ${senderMove}. Looks like you're equally matched! Maybe next time you'll win... or not. 😅`;
+  }
+  if (
+    (senderMove === "rock" && targetMove === "scissors") ||
+    (senderMove === "paper" && targetMove === "rock") ||
+    (senderMove === "scissors" && targetMove === "paper")
+  ) {
+    return `${sender} wins! ${senderMove} beats ${targetMove}. Victory is sweet... but remember, don't get cocky! 😎`;
+  }
+  return `${target} wins! ${targetMove} beats ${senderMove}. Oof, that’s gotta hurt! Better luck next time! 😂`;
 }
 
 // Tug of War
 function tugOfWar(sender, target) {
-const senderStrength = Math.floor(Math.random() * 100);
-const targetStrength = Math.floor(Math.random() * 100);
+  const senderStrength = Math.floor(Math.random() * 100);
+  const targetStrength = Math.floor(Math.random() * 100);
 
-if (senderStrength > targetStrength) {
-return `${sender} wins! They pulled with ${senderStrength} strength, while ${target} pulled with ${targetStrength}.`;
-} else if (senderStrength < targetStrength) {
-return `${target} wins! They pulled with ${targetStrength} strength, while ${sender} pulled with ${senderStrength}.`;
-} else {
-return `It's a tie! Both ${sender} and ${target} pulled with ${senderStrength} strength.`;
-}
+  if (senderStrength > targetStrength) {
+    return `${sender} wins! They pulled with ${senderStrength} strength, while ${target} pulled with ${targetStrength}. Looks like you're the stronger one! 💪`;
+  } else if (senderStrength < targetStrength) {
+    return `${target} wins! They pulled with ${targetStrength} strength, while ${sender} pulled with ${senderStrength}. Ouch, looks like someone skipped leg day! 😂`;
+  } else {
+    return `It's a tie! Both ${sender} and ${target} pulled with ${senderStrength} strength. A real stalemate! 😅`;
+  }
 }
 
 // Dice Roll
 function diceRoll(sender, target) {
-const senderRoll = Math.floor(Math.random() * 6) + 1;
-const targetRoll = Math.floor(Math.random() * 6) + 1;
+  const senderRoll = Math.floor(Math.random() * 6) + 1;
+  const targetRoll = Math.floor(Math.random() * 6) + 1;
 
-if (senderRoll > targetRoll) {
-return `${sender} wins! They rolled a ${senderRoll}, and ${target} rolled a ${targetRoll}.`;
-} else if (senderRoll < targetRoll) {
-return `${target} wins! They rolled a ${targetRoll}, and ${sender} rolled a ${senderRoll}.`;
-} else {
-return `It's a tie! Both ${sender} and ${target} rolled a ${senderRoll}.`;
-}
+  if (senderRoll > targetRoll) {
+    return `${sender} wins! They rolled a ${senderRoll}, and ${target} rolled a ${targetRoll}. Lucky roll! 🍀`;
+  } else if (senderRoll < targetRoll) {
+    return `${target} wins! They rolled a ${targetRoll}, and ${sender} rolled a ${senderRoll}. Better luck next time, dice are cruel! 🎲`;
+  } else {
+    return `It's a tie! Both ${sender} and ${target} rolled a ${senderRoll}. A roll of destiny! 🤔`;
+  }
 }
 
 // Coin Flip
 function coinFlip(sender, target) {
-const result = Math.random() < 0.5 ? "Heads" : "Tails";
+  const result = Math.random() < 0.5 ? "Heads" : "Tails";
 
-if (sender.toLowerCase() === result.toLowerCase()) {
-return `${sender} wins! The coin landed on ${result}.`;
-} else {
-return `${target} wins! The coin landed on ${result}.`;
-}
+  if (sender.toLowerCase() === result.toLowerCase()) {
+    return `${sender} wins! The coin landed on ${result}. Heads or tails, it’s your lucky day! 🍀`;
+  } else {
+    return `${target} wins! The coin landed on ${result}. Looks like luck wasn't on your side this time! 😅`;
+  }
 }
 
 // Rock Paper Scissors Lizard Spock (RPSLS)
 function rpsls(sender, target) {
-const choices = ["rock", "paper", "scissors", "lizard", "spock"];
-const winConditions = {
-rock: ["scissors", "lizard"],
-paper: ["rock", "spock"],
-scissors: ["paper", "lizard"],
-lizard: ["spock", "paper"],
-spock: ["rock", "scissors"]
-};
+  const choices = ["rock", "paper", "scissors", "lizard", "spock"];
+  const winConditions = {
+    rock: ["scissors", "lizard"],
+    paper: ["rock", "spock"],
+    scissors: ["paper", "lizard"],
+    lizard: ["spock", "paper"],
+    spock: ["rock", "scissors"]
+  };
 
-const senderMove = pickRandom(choices);
-const targetMove = pickRandom(choices);
+  const senderMove = pickRandom(choices);
+  const targetMove = pickRandom(choices);
 
-if (senderMove === targetMove) {
-return `${sender}, it's a tie with ${target}! Both chose ${senderMove}.`;
-}
+  if (senderMove === targetMove) {
+    return `${sender}, it's a tie with ${target}! Both chose ${senderMove}. A cosmic stalemate! 🌌`;
+  }
 
-if (winConditions[senderMove].includes(targetMove)) {
-return `${sender} wins! ${senderMove} beats ${targetMove}.`;
-} else {
-return `${target} wins! ${targetMove} beats ${senderMove}.`;
-}
+  if (winConditions[senderMove].includes(targetMove)) {
+    return `${sender} wins! ${senderMove} beats ${targetMove}. Oh, you’re the true master of the universe! 💥`;
+  } else {
+    return `${target} wins! ${targetMove} beats ${senderMove}. Looks like they outsmarted you this time! 🤔`;
+  }
 }
 
 // High or Low
 function highOrLow(sender, target) {
-const secretNumber = Math.floor(Math.random() * 100) + 1;
+  const secretNumber = Math.floor(Math.random() * 100) + 1;
+  let result = "";
 
-let result = "";
+  if (sender.toLowerCase() === "higher" && secretNumber > 50) {
+    result = `${sender} wins! The secret number was ${secretNumber}, which is higher than 50. Call it a win for your intuition! 🔮`;
+  } else if (sender.toLowerCase() === "lower" && secretNumber <= 50) {
+    result = `${sender} wins! The secret number was ${secretNumber}, which is lower than 50. Looks like you have the magic touch! ✨`;
+  } else {
+    result = `${target} wins! The secret number was ${secretNumber}, and ${sender} guessed wrong. Better luck next time! 🎯`;
+  }
 
-if (sender.toLowerCase() === "higher" && secretNumber > 50) {
-result = `${sender} wins! The secret number was ${secretNumber}, which is higher than 50.`;
-} else if (sender.toLowerCase() === "lower" && secretNumber <= 50) {
-result = `${sender} wins! The secret number was ${secretNumber}, which is lower than 50.`;
-} else {
-result = `${target} wins! The secret number was ${secretNumber}, and ${sender} guessed wrong.`;
-}
-
-return result;
+  return result;
 }
 
 // ===========================================
@@ -1185,3 +1184,4 @@ res.send("pong");
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Daily Stat API running on port ${port}`));
+
