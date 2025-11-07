@@ -22,47 +22,53 @@ return arr[Math.floor(Math.random() * arr.length)];
 
 // Check if jokes are enabled (global or per-type)
 function isJokeEnabled(req, type) {
-const global = req.query.jokes;
-if (global === "false") return false;
-if (global === "true") return true;
+  const global = req.query.jokes;
+  if (global === "false") return false;
+  if (global === "true") return true;
 
-const specific = req.query[`joke_${type}`];
-if (specific === "false") return false;
-if (specific === "true") return true;
+  const specific = req.query[`joke_${type}`];
+  if (specific === "false") return false;
+  if (specific === "true") return true;
 
-return true; // default to enabled
+  return true; // default to enabled
 }
 
+// Get a joke string for a given category and value (auto-scales)
 function getJoke(req, type, value) {
   if (!isJokeEnabled(req, type)) return "";
-  if (!jokes || !jokes[type]) return ""; // safety check
+  if (!jokes || !jokes[type]) return "";
 
-  const jokesForType = jokes[type];
+  const cfg =
+    (stats && stats[type]) ||
+    (personality && personality[type]) ||
+    null;
 
-  // Convert numeric strings like "42" → 42
-  if (typeof value === "string" && !isNaN(value)) {
-    value = parseFloat(value);
+  let min = 0;
+  let max = 100;
+
+  // 🎯 Try to use actual stat range if available
+  if (cfg && typeof cfg.min === "number" && typeof cfg.max === "number") {
+    min = cfg.min;
+    max = cfg.max;
   }
 
-  // 🧮 Numeric input (most stats, interactions)
-  if (typeof value === "number") {
-    const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";
-    if (jokesForType[level]) return " " + pickRandom(jokesForType[level]);
-  }
+  // Normalize value into 0–100 range
+  const scaled =
+    typeof value === "number"
+      ? ((value - min) / (max - min)) * 100
+      : parseFloat(value);
 
-  // 🔤 Direct level name ("low" / "medium" / "high")
-  if (typeof value === "string" && jokesForType[value]) {
-    return " " + pickRandom(jokesForType[value]);
-  }
+  // Determine level based on scaled % thresholds
+  const level =
+    scaled <= 30 ? "low" : scaled <= 70 ? "medium" : "high";
 
-  // 📜 Array-based jokes (used for lists)
-  if (Array.isArray(jokesForType)) {
-    const index = Math.max(0, Math.min(value, jokesForType.length - 1));
-    return " " + jokesForType[index];
+  if (jokes[type] && jokes[type][level]) {
+    return " " + pickRandom(jokes[type][level]);
   }
 
   return "";
 }
+
 
 // Format a username: remove @ and lowercase for internal use
 function cleanUsername(name = "") {
