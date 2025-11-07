@@ -33,25 +33,36 @@ if (specific === "true") return true;
 return true; // default to enabled
 }
 
-// Get a joke string for a given category and value (scales automatically)
 function getJoke(req, type, value) {
   if (!isJokeEnabled(req, type)) return "";
-  const cfg =
-    (stats && stats[type]) ||
-    (personality && personality[type]) ||
-    (piracy && piracy[type]) ||
-    null;
-  if (!cfg || !cfg.levels) return "";
+  if (!jokes || !jokes[type]) return ""; // safety check
 
-  const [lowThreshold, highThreshold] = cfg.levels;
-  let level = "high"; // default to high
-  if (value <= lowThreshold) level = "low";
-  else if (value <= highThreshold) level = "medium";
+  const jokesForType = jokes[type];
 
-  if (!jokes[type] || !jokes[type][level]) return "";
-  return " " + pickRandom(jokes[type][level]);
+  // Convert numeric strings like "42" → 42
+  if (typeof value === "string" && !isNaN(value)) {
+    value = parseFloat(value);
+  }
+
+  // 🧮 Numeric input (most stats, interactions)
+  if (typeof value === "number") {
+    const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";
+    if (jokesForType[level]) return " " + pickRandom(jokesForType[level]);
+  }
+
+  // 🔤 Direct level name ("low" / "medium" / "high")
+  if (typeof value === "string" && jokesForType[value]) {
+    return " " + pickRandom(jokesForType[value]);
+  }
+
+  // 📜 Array-based jokes (used for lists)
+  if (Array.isArray(jokesForType)) {
+    const index = Math.max(0, Math.min(value, jokesForType.length - 1));
+    return " " + jokesForType[index];
+  }
+
+  return "";
 }
-
 
 // Format a username: remove @ and lowercase for internal use
 function cleanUsername(name = "") {
@@ -404,176 +415,6 @@ parley: { min: 0, max: 100, levels: [30, 70], label: "parley skill", unit: "%", 
 };
 
 // ===========================================
-// 🐾 ANIMAL VIBES
-// ===========================================
-const animal = {
-  animal: {
-    list: [
-      "🦁 Lion", "🐯 Tiger", "🐻 Bear", "🐶 Dog", "🐱 Cat",
-      "🦊 Fox", "🐼 Panda", "🐨 Koala", "🐸 Frog", "🐵 Monkey",
-      "🦄 Unicorn", "🐍 Snake", "🦅 Eagle", "🐺 Wolf", "🐢 Turtle"
-    ],
-    label: "animal spirit"
-  }
-};
-
-// ===========================================
-// 🍹 DRINK VIBES
-// ===========================================
-const drink = {
-  drink: {
-    list: [
-      "☕ Coffee", "🍵 Tea", "🍸 Martini", "🍹 Mojito", "🍺 Beer",
-      "🥃 Whiskey", "🍷 Red Wine", "🥂 Champagne", "🧋 Boba Tea",
-      "🍋 Lemonade", "🍫 Hot Chocolate", "🍶 Sake", "🥛 Milk",
-      "🧃 Juice", "🍈 Melon Soda"
-    ],
-    label: "drink of the day"
-  }
-};
-
-// ===========================================
-// 🎨 COLORS
-// ===========================================
-const colors = {
-  colors: {
-    list: [
-      "💚 Green", "💙 Blue", "💛 Yellow", "❤️ Red", "🖤 Black",
-      "🤍 White", "💜 Purple", "🧡 Orange", "💖 Pink", "🌈 Rainbow"
-    ],
-    label: "color"
-  }
-};
-
-// ===========================================
-// 🧘 AURA VIBES
-// ===========================================
-const auravibes = {
-  auravibes: {
-    list: [
-      "✨ Radiant", "🌊 Calm", "🔥 Fiery", "🌱 Grounded", "💫 Mystical",
-      "🌸 Gentle", "⚡ Energetic", "🪐 Cosmic", "🌙 Dreamy", "🌟 Sparkling"
-    ],
-    label: "aura vibe"
-  }
-};
-
-// ===========================================
-// 🏴 PIRATE VIBES
-// ===========================================
-const piratevibes = {
-  piratevibes: {
-    list: [
-      "🏴‍☠️ Swashbuckler", "⚓ Captain", "🦜 Parrot Whisperer",
-      "💰 Treasure Hunter", "🔥 Cannon Master", "🗺️ Navigator",
-      "🦑 Sea Monster Tamer"
-    ],
-    label: "pirate vibe"
-  }
-};
-
-// ===========================================
-// 🧙 WIZARD VIBES
-// ===========================================
-const wizardvibes = {
-  wizardvibes: {
-    list: [
-      "🪄 Apprentice", "✨ Sorcerer", "📜 Spellcaster", "🔮 Seer",
-      "🔥 Pyromancer", "❄️ Cryomancer", "🌀 Warlock"
-    ],
-    label: "wizard vibe"
-  }
-};
-
-// ===========================================
-// 👗 DAILY OUTFIT / STYLE
-// ===========================================
-const outfits = {
-  outfits: {
-    list: [
-      "🧥 Casual Chic", "👗 Elegant", "👕 Sporty", "🩳 Relaxed", "👘 Traditional",
-      "🧣 Cozy", "🕶️ Trendy", "🦸 Heroic", "🎭 Costume", "🥋 Martial"
-    ],
-    label: "outfit/style"
-  }
-};
-
-// ===========================================
-// ⚡ ELEMENTAL AFFINITY
-// ===========================================
-const elements = {
-  elements: {
-    list: ["🔥 Fire", "💧 Water", "🌱 Earth", "💨 Air", "⚡ Lightning", "❄️ Ice", "🌌 Void"],
-    label: "elemental affinity"
-  }
-};
-
-// ===========================================
-// ⚡ DAILY POWER / ABILITY
-// ===========================================
-const powers = {
-  powers: {
-    list: [
-      "💪 Super Strength", "🧠 Telepathy", "🦾 Tech Genius", "🌀 Time Manipulation",
-      "🕶️ Invisibility", "⚡ Lightning Speed", "🌌 Cosmic Awareness"
-    ],
-    label: "power/ability"
-  }
-};
-
-// ===========================================
-// 🏴 PIRATE OUTFITS / ACCESSORIES
-// ===========================================
-const pirateoutfits = {
-  pirateoutfits: {
-    list: [
-      "🪖 Tricorn Hat", "🧥 Captain’s Coat", "🦜 Parrot Companion",
-      "💰 Gold Earrings", "⚓ Anchor Tattoo", "🗡️ Cutlass", "🦴 Peg Leg"
-    ],
-    label: "pirate accessory"
-  }
-};
-
-// ===========================================
-// 🧙 WIZARD ITEMS / ACCESSORIES
-// ===========================================
-const wizarditems = {
-  wizarditems: {
-    list: [
-      "🪄 Wand", "📜 Spellbook", "🔮 Crystal Ball", "🧙 Robe",
-      "🧪 Potion", "🪞 Mirror of Insight", "🧹 Flying Broom"
-    ],
-    label: "wizard item"
-  }
-};
-
-// ===========================================
-// 🌟 ELEMENTAL ITEMS / ACCESSORIES
-// ===========================================
-const elementalitems = {
-  elementalitems: {
-    list: [
-      "🔥 Fire Amulet", "💧 Water Orb", "🌱 Earth Ring", "💨 Air Pendant",
-      "⚡ Lightning Bracelet", "❄️ Ice Crystal", "🌌 Void Charm"
-    ],
-    label: "elemental item"
-  }
-};
-
-// ===========================================
-// 🧘 AURA ACCESSORIES
-// ===========================================
-const auraitems = {
-  auraitems: {
-    list: [
-      "✨ Crystal Necklace", "🌸 Flower Crown", "🪐 Cosmic Ring",
-      "🌊 Water Bracelet", "🔥 Flame Pendant", "🌙 Moon Charm"
-    ],
-    label: "aura accessory"
-  }
-};
-
-// ===========================================
 // 🤝 INTERACTIONS
 // ===========================================
 
@@ -596,147 +437,6 @@ const interactions = [
 // ===========================================
 
 const jokes = {
-  animal: [
-    "You’re feeling regal and mighty today! 🦁",
-    "Ferocious energy surging through you! 🐯",
-    "Strong and grounded vibes. 🐻",
-    "Loyal and playful spirit today. 🐶",
-    "Curious and clever! 🐱",
-    "Sly and mischievous energy. 🦊",
-    "Cuddly and relaxed today. 🐼",
-    "Calm and sleepy — taking it slow. 🐨",
-    "Leaping into the day! 🐸",
-    "Cheeky and fun energy. 🐵",
-    "Magical and unique — unicorn vibes! 🦄",
-    "Sinuous and mysterious. 🐍",
-    "Soaring above challenges. 🦅",
-    "Wild and adventurous! 🐺",
-    "Slow but steady today. 🐢"
-  ],
-  drink: [
-    "Strong and bold — just like your coffee! ☕",
-    "Calm and soothing today, like tea. 🍵",
-    "Feeling fancy and elegant. 🍸",
-    "Refreshing and lively — mojito vibes! 🍹",
-    "Chilled out with a casual brew. 🍺",
-    "Strong spirit and full-bodied energy! 🥃",
-    "Rich and smooth, like red wine. 🍷",
-    "Sparkling and celebratory today! 🥂",
-    "Fun and playful, like boba tea. 🧋",
-    "Zesty and bright — lemonade mood! 🍋",
-    "Sweet comfort for the soul. 🍫",
-    "Exotic and refined — sake style. 🍶",
-    "Simple and wholesome today. 🥛",
-    "Juicy and energizing! 🧃",
-    "Sweet, fruity, and bubbly vibes. 🍈"
-  ],
-  colors: [
-    "Feeling fresh and natural! 🌿",
-    "Calm and serene, like the ocean. 🌊",
-    "Sunny and cheerful today! ☀️",
-    "Passionate energy detected! 🔥",
-    "Mysterious and deep vibes. 🌑",
-    "Pure and peaceful today. 🕊️",
-    "Royal and majestic energy! 👑",
-    "Warm and vibrant today! 🍊",
-    "Sparkly and sweet vibes! ✨",
-    "Rainbow energy — all the colors of you! 🌈"
-  ],
-  auravibes: [
-    "Your aura is shining bright today! ✨",
-    "Flowing like a gentle river. 🌊",
-    "Burning with unstoppable energy! 🔥",
-    "Centered and strong. 🌱",
-    "Mystical and mysterious vibes. 💫",
-    "Soft and peaceful aura. 🌸",
-    "Charged and vibrant! ⚡",
-    "Cosmic energy surrounds you. 🪐",
-    "Dreamy and whimsical mood. 🌙",
-    "Sparkles everywhere you go! 🌟"
-  ],
-  piratevibes: [
-    "Ahoy! Ready to plunder the day! 🏴‍☠️",
-    "All hands on deck, captain! ⚓",
-    "Squawking secrets with your feathered friends! 🦜",
-    "Gold and jewels are calling your name! 💰",
-    "Boom! Cannons at the ready! 🔥",
-    "Charting a course to greatness! 🗺️",
-    "Taming the sea’s fiercest creatures! 🦑"
-  ],
-  wizard: [
-    "Casting charm spells like a pro! 🪄",
-    "Magical energy flows through you ✨",
-    "Beware, your incantations may misfire 😏",
-    "Seeing visions and mysteries today 🔮",
-    "You’re on fire… literally 🔥",
-    "Ice cold and magical ❄️",
-    "Dark magic, light heart 🌀"
-  ],
-  outfits: [
-    "Looking stylish today! 🧥",
-    "Elegance is in your aura. 👗",
-    "Active and sporty vibes! 👕",
-    "Relaxed and comfy — love it! 🩳",
-    "Honoring tradition with style. 👘",
-    "Cozy and warm for the day. 🧣",
-    "Trendy and fashionable! 🕶️",
-    "Heroic energy in your outfit! 🦸",
-    "Fun and playful — embrace the costume! 🎭",
-    "Power moves only, dressed to conquer! 🥋"
-  ],
-  elements: [
-    "Burning bright today! 🔥",
-    "Flowing smoothly and cool. 💧",
-    "Strong and grounded. 🌱",
-    "Light and breezy vibes. 💨",
-    "Electric energy surging! ⚡",
-    "Chilly and sharp! ❄️",
-    "Mysterious and cosmic. 🌌"
-  ],
-  powers: [
-    "Unstoppable strength today! 💪",
-    "Reading minds like a pro! 🧠",
-    "Inventive genius in full swing! 🦾",
-    "Time waits for no one — you control it! 🌀",
-    "Disappear like a shadow. 🕶️",
-    "Fast as lightning! ⚡",
-    "Cosmic awareness at its peak! 🌌"
-  ],
-  pirateoutfits: [
-    "Looking ready to plunder! 🪖",
-    "Captain chic on point! 🧥",
-    "Your parrot is your hype squad! 🦜",
-    "Gold shines brighter on you 💰",
-    "Anchors aweigh! ⚓",
-    "Sharp and deadly today! 🗡️",
-    "Walking like a true pirate 🦴"
-  ],
-  wizarditems: [
-    "Your wand is ready! 🪄",
-    "Spellbook full of secrets! 📜",
-    "Seeing all the mysteries 🔮",
-    "Robe flowing magically 🧙",
-    "Potion brewed to perfection 🧪",
-    "Mirror reveals your true self 🪞",
-    "Flying high on broomstick adventures 🧹"
-  ],
-  elementalitems: [
-    "Feeling the fire within! 🔥",
-    "Smooth and flowing energy 💧",
-    "Grounded and strong 🌱",
-    "Breezy and light today 💨",
-    "Shocking power surging ⚡",
-    "Chill and steady ❄️",
-    "Mysterious cosmic energy 🌌"
-  ],
-  auraitems: [
-    "Shining bright like a crystal ✨",
-    "Floral energy blooming 🌸",
-    "Cosmic vibes surround you 🪐",
-    "Flowing like water today 🌊",
-    "Fiery passion burning 🔥",
-    "Moonlight magic shines 🌙"
-  ],
 tinkabell: {
 low: ["your fairy level is FUCKING DISGUSTING. 😂", "You shine bright like a diamond...covered in shit. 💩"],
 medium: ["Your wings are growing. 🦋", "fairy training is starting to pay off. 💖"],
@@ -1362,7 +1062,7 @@ return pickRandom(outcomes);
 // ===========================================
 // 📅 DAILY STORAGE & COUNTERS
 // ===========================================
-const aspectsOfTheDay = { daddy: {}, pp: {}, bb: {}, princess: {}, goodgirl: {}, catmom: {}, stinker: {}, pirate: {}, captain: {}, animal: {}, drink: {} }; // storage for "of the Day" 
+const aspectsOfTheDay = { daddy: {}, pp: {}, bb: {}, princess: {}, goodgirl: {}, catmom: {}, stinker: {}, pirate: {}, captain: {} }; // storage for "of the Day" 
 const lock = {}; // lock mechanism 
 const statCounters = {}; // { username: { command: count } }
 const commandCounters = {}; // { command: totalCount }
@@ -1370,7 +1070,7 @@ const commandCounters = {}; // { command: totalCount }
 app.get("/", (req, res) => {
 const senderRaw = req.query.sender || req.query.user || "someone";
 const userRaw = req.query.user || "";
-const type = (req.query.type || "beard").toLowerCase();
+const type = (req.query.type || "beard","animal").toLowerCase();
 const sender = cleanUsername(senderRaw);
 const senderDisplay = formatDisplayName(senderRaw);
 const targetDisplay = formatDisplayName(userRaw);
@@ -1732,265 +1432,6 @@ winner
 }
 
 // ===========================================
-// 🐾 ANIMAL & ANIMAL OF THE DAY
-// ===========================================
-if (type === "animal") {
-  const cfg = animal.animal;
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.animal[index];
-
-  if (!aspectsOfTheDay.animal) aspectsOfTheDay.animal = {};
-
-  if (chosen.toLowerCase().includes("unicorn") && !aspectsOfTheDay.animal[today]) {
-    aspectsOfTheDay.animal[today] = { user: sender, chosen };
-    message = `🐾 ${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke} 🏆 You are the *Animal of the Day!* 🎉`;
-  } else if (aspectsOfTheDay.animal[today]?.user === sender) {
-    message = `🐾 ${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke} 👑 You’re still reigning *Animal of the Day!*`;
-  } else {
-    message = `🐾 ${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  }
-
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-if (type === "animalofday") {
-  const winner = aspectsOfTheDay.animal?.[today];
-  return res.send(
-    winner
-      ? `🐾 The Animal of the Day is ${formatDisplayName(winner.user)} — a majestic ${winner.chosen}! 👑`
-      : "🐾 There is no Animal of the Day yet! Be the first to roar! 🦁"
-  );
-}
-
-// ===========================================
-// 🍹 DRINK & DRINK OF THE DAY
-// ===========================================
-if (type === "drink") {
-  const cfg = drink.drink;
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.drink[index];
-
-  if (!aspectsOfTheDay.drink) aspectsOfTheDay.drink = {};
-
-  if (chosen.toLowerCase().includes("🍸 martini") && !aspectsOfTheDay.drink[today]) {
-    aspectsOfTheDay.drink[today] = { user: sender, chosen };
-    message = `🍹 ${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke} 🏆 You are the *Drink of the Day!* 🎉`;
-  } else if (aspectsOfTheDay.drink[today]?.user === sender) {
-    message = `🍹 ${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke} 👑 You’re still reigning *Drink of the Day!*`;
-  } else {
-    message = `🍹 ${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  }
-
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-if (type === "drinkoofday") {
-  const winner = aspectsOfTheDay.drink?.[today];
-  return res.send(
-    winner
-      ? `🍹 The Drink of the Day is ${formatDisplayName(winner.user)} — ${winner.chosen}! 🏆`
-      : "🍹 There is no Drink of the Day yet! Be the first to sip! 🍸"
-  );
-}
-
-// ===========================================
-// 🎨 COLORS
-// ===========================================
-if (colors[type]) {
-  const cfg = colors[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.colors?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🧘 AURA VIBES
-// ===========================================
-if (auravibes[type]) {
-  const cfg = auravibes[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.auravibes?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🏴 PIRATE VIBES
-// ===========================================
-if (piratevibes[type]) {
-  const cfg = piratevibes[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.piratevibes?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🧙 WIZARD VIBES
-// ===========================================
-if (wizardvibes[type]) {
-  const cfg = wizardvibes[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.wizard?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 👗 DAILY OUTFIT / STYLE
-// ===========================================
-if (outfits[type]) {
-  const cfg = outfits[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.outfits?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// ⚡ ELEMENTAL AFFINITY
-// ===========================================
-if (elements[type]) {
-  const cfg = elements[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.elements?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// ⚡ DAILY POWER / ABILITY
-// ===========================================
-if (powers[type]) {
-  const cfg = powers[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.powers?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🏴 PIRATE ACCESSORIES
-// ===========================================
-if (pirateoutfits[type]) {
-  const cfg = pirateoutfits[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.pirateoutfits?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🧙 WIZARD ITEMS
-// ===========================================
-if (wizarditems[type]) {
-  const cfg = wizarditems[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.wizarditems?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🌟 ELEMENTAL ITEMS
-// ===========================================
-if (elementalitems[type]) {
-  const cfg = elementalitems[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.elementalitems?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
-// 🧘 AURA ACCESSORIES
-// ===========================================
-if (auraitems[type]) {
-  const cfg = auraitems[type];
-  const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
-  const chosen = cfg.list[index];
-  const joke = jokes.auraitems?.[index] || "";
-
-  message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
-  statCounters[sender] = statCounters[sender] || {};
-  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-  commandCounters[type] = (commandCounters[type] || 0) + 1;
-
-  return res.send(message);
-}
-
-// ===========================================
 // 📊 STATS
 // ===========================================
 
@@ -1999,7 +1440,6 @@ const cfg = stats[type];
 value = generateValue(seed, type, cfg.max, cfg.min, sender);
 const space = spaceIf(cfg.unitSpace);
 message = `${senderDisplay}, your ${cfg.label} is ${value}${space}${cfg.unit} today!${getJoke(req, type, value)}`;
-
 statCounters[sender] = statCounters[sender] || {};
 statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
 commandCounters[type] = (commandCounters[type] || 0) + 1;
