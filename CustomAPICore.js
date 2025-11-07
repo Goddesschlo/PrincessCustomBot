@@ -433,24 +433,6 @@ const animal = {
   }
 };
 
-jokes.animal = [
-  "You’re feeling regal and mighty today! 🦁",
-  "Ferocious energy surging through you! 🐯",
-  "Strong and grounded vibes. 🐻",
-  "Loyal and playful spirit today. 🐶",
-  "Curious and clever! 🐱",
-  "Sly and mischievous energy. 🦊",
-  "Cuddly and relaxed today. 🐼",
-  "Calm and sleepy — taking it slow. 🐨",
-  "Leaping into the day! 🐸",
-  "Cheeky and fun energy. 🐵",
-  "Magical and unique — unicorn vibes! 🦄",
-  "Sinuous and mysterious. 🐍",
-  "Soaring above challenges. 🦅",
-  "Wild and adventurous! 🐺",
-  "Slow but steady today. 🐢"
-];
-
 // ===========================================
 // 🍹 DRINK VIBES
 // ===========================================
@@ -466,24 +448,6 @@ const drink = {
   }
 };
 
-jokes.drink = [
-  "Strong and bold — just like your coffee! ☕",
-  "Calm and soothing today, like tea. 🍵",
-  "Feeling fancy and elegant. 🍸",
-  "Refreshing and lively — mojito vibes! 🍹",
-  "Chilled out with a casual brew. 🍺",
-  "Strong spirit and full-bodied energy! 🥃",
-  "Rich and smooth, like red wine. 🍷",
-  "Sparkling and celebratory today! 🥂",
-  "Fun and playful, like boba tea. 🧋",
-  "Zesty and bright — lemonade mood! 🍋",
-  "Sweet comfort for the soul. 🍫",
-  "Exotic and refined — sake style. 🍶",
-  "Simple and wholesome today. 🥛",
-  "Juicy and energizing! 🧃",
-  "Sweet, fruity, and bubbly vibes. 🍈"
-];
-
 // ===========================================
 // 🎨 COLORS
 // ===========================================
@@ -497,19 +461,6 @@ const colors = {
   }
 };
 
-jokes.colors = [
-  "Feeling fresh and natural! 🌿",
-  "Calm and serene, like the ocean. 🌊",
-  "Sunny and cheerful today! ☀️",
-  "Passionate energy detected! 🔥",
-  "Mysterious and deep vibes. 🌑",
-  "Pure and peaceful today. 🕊️",
-  "Royal and majestic energy! 👑",
-  "Warm and vibrant today! 🍊",
-  "Sparkly and sweet vibes! ✨",
-  "Rainbow energy — all the colors of you! 🌈"
-];
-
 // ===========================================
 // 🧘 AURA VIBES
 // ===========================================
@@ -522,19 +473,6 @@ const auravibes = {
     label: "aura vibe"
   }
 };
-
-jokes.auravibes = [
-  "Your aura is shining bright today! ✨",
-  "Flowing like a gentle river. 🌊",
-  "Burning with unstoppable energy! 🔥",
-  "Centered and strong. 🌱",
-  "Mystical and mysterious vibes. 💫",
-  "Soft and peaceful aura. 🌸",
-  "Charged and vibrant! ⚡",
-  "Cosmic energy surrounds you. 🪐",
-  "Dreamy and whimsical mood. 🌙",
-  "Sparkles everywhere you go! 🌟"
-];
 
 // ===========================================
 // 🏴 PIRATE VIBES
@@ -550,16 +488,6 @@ const pirateVibes = {
   }
 };
 
-jokes.pirateVibes = [
-  "Ahoy! Ready to plunder the day! 🏴‍☠️",
-  "All hands on deck, captain! ⚓",
-  "Squawking secrets with your feathered friends! 🦜",
-  "Gold and jewels are calling your name! 💰",
-  "Boom! Cannons at the ready! 🔥",
-  "Charting a course to greatness! 🗺️",
-  "Taming the sea’s fiercest creatures! 🦑"
-];
-
 // ===========================================
 // 🧙 WIZARD VIBES
 // ===========================================
@@ -572,16 +500,6 @@ const wizardVibes = {
     label: "wizard vibe"
   }
 };
-
-jokes.wizardVibes = [
-  "Casting charm spells like a pro! 🪄",
-  "Magical energy flows through you ✨",
-  "Beware, your incantations may misfire 😏",
-  "Seeing visions and mysteries today 🔮",
-  "You’re on fire… literally 🔥",
-  "Ice cold and magical ❄️",
-  "Dark magic, light heart 🌀"
-];
 
 // ===========================================
 // 👗 DAILY OUTFIT / STYLE
@@ -596,19 +514,6 @@ const outfits = {
   }
 };
 
-jokes.outfits = [
-  "Looking stylish today! 🧥",
-  "Elegance is in your aura. 👗",
-  "Active and sporty vibes! 👕",
-  "Relaxed and comfy — love it! 🩳",
-  "Honoring tradition with style. 👘",
-  "Cozy and warm for the day. 🧣",
-  "Trendy and fashionable! 🕶️",
-  "Heroic energy in your outfit! 🦸",
-  "Fun and playful — embrace the costume! 🎭",
-  "Power moves only, dressed to conquer! 🥋"
-];
-
 // ===========================================
 // ⚡ ELEMENTAL AFFINITY
 // ===========================================
@@ -618,16 +523,6 @@ const elements = {
     label: "elemental affinity"
   }
 };
-
-jokes.elements = [
-  "Burning bright today! 🔥",
-  "Flowing smoothly and cool. 💧",
-  "Strong and grounded. 🌱",
-  "Light and breezy vibes. 💨",
-  "Electric energy surging! ⚡",
-  "Chilly and sharp! ❄️",
-  "Mysterious and cosmic. 🌌"
-];
 
 // ===========================================
 // ⚡ DAILY POWER / ABILITY
@@ -642,16 +537,6 @@ const powers = {
   }
 };
 
-jokes.powers = [
-  "Unstoppable strength today! 💪",
-  "Reading minds like a pro! 🧠",
-  "Inventive genius in full swing! 🦾",
-  "Time waits for no one — you control it! 🌀",
-  "Disappear like a shadow. 🕶️",
-  "Fast as lightning! ⚡",
-  "Cosmic awareness at its peak! 🌌"
-];
-
 // ===========================================
 // 🏴 PIRATE OUTFITS / ACCESSORIES
 // ===========================================
@@ -664,16 +549,6 @@ const pirateOutfits = {
     label: "pirate accessory"
   }
 };
-
-jokes.pirateOutfits = [
-  "Looking ready to plunder! 🪖",
-  "Captain chic on point! 🧥",
-  "Your parrot is your hype squad! 🦜",
-  "Gold shines brighter on you 💰",
-  "Anchors aweigh! ⚓",
-  "Sharp and deadly today! 🗡️",
-  "Walking like a true pirate 🦴"
-];
 
 // ===========================================
 // 🧙 WIZARD ITEMS / ACCESSORIES
@@ -688,16 +563,6 @@ const wizardItems = {
   }
 };
 
-jokes.wizardItems = [
-  "Your wand is ready! 🪄",
-  "Spellbook full of secrets! 📜",
-  "Seeing all the mysteries 🔮",
-  "Robe flowing magically 🧙",
-  "Potion brewed to perfection 🧪",
-  "Mirror reveals your true self 🪞",
-  "Flying high on broomstick adventures 🧹"
-];
-
 // ===========================================
 // 🌟 ELEMENTAL ITEMS / ACCESSORIES
 // ===========================================
@@ -711,15 +576,18 @@ const elementalItems = {
   }
 };
 
-jokes.elementalItems = [
-  "Feeling the fire within! 🔥",
-  "Smooth and flowing energy 💧",
-  "Grounded and strong 🌱",
-  "Breezy and light today 💨",
-  "Shocking power surging ⚡",
-  "Chill and steady ❄️",
-  "Mysterious and cosmic. 🌌"
-];
+// ===========================================
+// 🧘 AURA ACCESSORIES
+// ===========================================
+const auraItems = {
+  auraItems: {
+    list: [
+      "✨ Crystal Necklace", "🌸 Flower Crown", "🪐 Cosmic Ring",
+      "🌊 Water Bracelet", "🔥 Flame Pendant", "🌙 Moon Charm"
+    ],
+    label: "aura accessory"
+  }
+};
 
 // ===========================================
 // 🤝 INTERACTIONS
@@ -744,6 +612,147 @@ const interactions = [
 // ===========================================
 
 const jokes = {
+animal: [
+    "You’re feeling regal and mighty today! 🦁",
+    "Ferocious energy surging through you! 🐯",
+    "Strong and grounded vibes. 🐻",
+    "Loyal and playful spirit today. 🐶",
+    "Curious and clever! 🐱",
+    "Sly and mischievous energy. 🦊",
+    "Cuddly and relaxed today. 🐼",
+    "Calm and sleepy — taking it slow. 🐨",
+    "Leaping into the day! 🐸",
+    "Cheeky and fun energy. 🐵",
+    "Magical and unique — unicorn vibes! 🦄",
+    "Sinuous and mysterious. 🐍",
+    "Soaring above challenges. 🦅",
+    "Wild and adventurous! 🐺",
+    "Slow but steady today. 🐢"
+  ],
+  drink: [
+    "Strong and bold — just like your coffee! ☕",
+    "Calm and soothing today, like tea. 🍵",
+    "Feeling fancy and elegant. 🍸",
+    "Refreshing and lively — mojito vibes! 🍹",
+    "Chilled out with a casual brew. 🍺",
+    "Strong spirit and full-bodied energy! 🥃",
+    "Rich and smooth, like red wine. 🍷",
+    "Sparkling and celebratory today! 🥂",
+    "Fun and playful, like boba tea. 🧋",
+    "Zesty and bright — lemonade mood! 🍋",
+    "Sweet comfort for the soul. 🍫",
+    "Exotic and refined — sake style. 🍶",
+    "Simple and wholesome today. 🥛",
+    "Juicy and energizing! 🧃",
+    "Sweet, fruity, and bubbly vibes. 🍈"
+  ],
+  colors: [
+    "Feeling fresh and natural! 🌿",
+    "Calm and serene, like the ocean. 🌊",
+    "Sunny and cheerful today! ☀️",
+    "Passionate energy detected! 🔥",
+    "Mysterious and deep vibes. 🌑",
+    "Pure and peaceful today. 🕊️",
+    "Royal and majestic energy! 👑",
+    "Warm and vibrant today! 🍊",
+    "Sparkly and sweet vibes! ✨",
+    "Rainbow energy — all the colors of you! 🌈"
+  ],
+  auravibes: [
+    "Your aura is shining bright today! ✨",
+    "Flowing like a gentle river. 🌊",
+    "Burning with unstoppable energy! 🔥",
+    "Centered and strong. 🌱",
+    "Mystical and mysterious vibes. 💫",
+    "Soft and peaceful aura. 🌸",
+    "Charged and vibrant! ⚡",
+    "Cosmic energy surrounds you. 🪐",
+    "Dreamy and whimsical mood. 🌙",
+    "Sparkles everywhere you go! 🌟"
+  ],
+  piratevibes: [
+    "Ahoy! Ready to plunder the day! 🏴‍☠️",
+    "All hands on deck, captain! ⚓",
+    "Squawking secrets with your feathered friends! 🦜",
+    "Gold and jewels are calling your name! 💰",
+    "Boom! Cannons at the ready! 🔥",
+    "Charting a course to greatness! 🗺️",
+    "Taming the sea’s fiercest creatures! 🦑"
+  ],
+  wizard: [
+    "Casting charm spells like a pro! 🪄",
+    "Magical energy flows through you ✨",
+    "Beware, your incantations may misfire 😏",
+    "Seeing visions and mysteries today 🔮",
+    "You’re on fire… literally 🔥",
+    "Ice cold and magical ❄️",
+    "Dark magic, light heart 🌀"
+  ],
+  outfits: [
+    "Looking stylish today! 🧥",
+    "Elegance is in your aura. 👗",
+    "Active and sporty vibes! 👕",
+    "Relaxed and comfy — love it! 🩳",
+    "Honoring tradition with style. 👘",
+    "Cozy and warm for the day. 🧣",
+    "Trendy and fashionable! 🕶️",
+    "Heroic energy in your outfit! 🦸",
+    "Fun and playful — embrace the costume! 🎭",
+    "Power moves only, dressed to conquer! 🥋"
+  ],
+  elements: [
+    "Burning bright today! 🔥",
+    "Flowing smoothly and cool. 💧",
+    "Strong and grounded. 🌱",
+    "Light and breezy vibes. 💨",
+    "Electric energy surging! ⚡",
+    "Chilly and sharp! ❄️",
+    "Mysterious and cosmic. 🌌"
+  ],
+  powers: [
+    "Unstoppable strength today! 💪",
+    "Reading minds like a pro! 🧠",
+    "Inventive genius in full swing! 🦾",
+    "Time waits for no one — you control it! 🌀",
+    "Disappear like a shadow. 🕶️",
+    "Fast as lightning! ⚡",
+    "Cosmic awareness at its peak! 🌌"
+  ],
+  pirateoutfits: [
+    "Looking ready to plunder! 🪖",
+    "Captain chic on point! 🧥",
+    "Your parrot is your hype squad! 🦜",
+    "Gold shines brighter on you 💰",
+    "Anchors aweigh! ⚓",
+    "Sharp and deadly today! 🗡️",
+    "Walking like a true pirate 🦴"
+  ],
+  wizarditems: [
+    "Your wand is ready! 🪄",
+    "Spellbook full of secrets! 📜",
+    "Seeing all the mysteries 🔮",
+    "Robe flowing magically 🧙",
+    "Potion brewed to perfection 🧪",
+    "Mirror reveals your true self 🪞",
+    "Flying high on broomstick adventures 🧹"
+  ],
+  elementalitems: [
+    "Feeling the fire within! 🔥",
+    "Smooth and flowing energy 💧",
+    "Grounded and strong 🌱",
+    "Breezy and light today 💨",
+    "Shocking power surging ⚡",
+    "Chill and steady ❄️",
+    "Mysterious cosmic energy 🌌"
+  ],
+  auraitems: [
+    "Shining bright like a crystal ✨",
+    "Floral energy blooming 🌸",
+    "Cosmic vibes surround you 🪐",
+    "Flowing like water today 🌊",
+    "Fiery passion burning 🔥",
+    "Moonlight magic shines 🌙"
+  ],
 tinkabell: {
 low: ["your fairy level is FUCKING DISGUSTING. 😂", "You shine bright like a diamond...covered in shit. 💩"],
 medium: ["Your wings are growing. 🦋", "fairy training is starting to pay off. 💖"],
