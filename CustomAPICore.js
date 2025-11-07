@@ -22,51 +22,23 @@ return arr[Math.floor(Math.random() * arr.length)];
 
 // Check if jokes are enabled (global or per-type)
 function isJokeEnabled(req, type) {
-  const global = req.query.jokes;
-  if (global === "false") return false;
-  if (global === "true") return true;
+const global = req.query.jokes;
+if (global === "false") return false;
+if (global === "true") return true;
 
-  const specific = req.query[`joke_${type}`];
-  if (specific === "false") return false;
-  if (specific === "true") return true;
+const specific = req.query[`joke_${type}`];
+if (specific === "false") return false;
+if (specific === "true") return true;
 
-  return true; // default to enabled
+return true; // default to enabled
 }
 
-// Get a joke string for a given category and value (auto-scales)
+// Get a joke string for a given category and value
 function getJoke(req, type, value) {
-  if (!isJokeEnabled(req, type)) return "";
-  if (!jokes || !jokes[type]) return "";
-
-  const cfg =
-    (stats && stats[type]) ||
-    (personality && personality[type]) ||
-    null;
-
-  let min = 0;
-  let max = 100;
-
-  // 🎯 Try to use actual stat range if available
-  if (cfg && typeof cfg.min === "number" && typeof cfg.max === "number") {
-    min = cfg.min;
-    max = cfg.max;
-  }
-
-  // Normalize value into 0–100 range
-  const scaled =
-    typeof value === "number"
-      ? ((value - min) / (max - min)) * 100
-      : parseFloat(value);
-
-  // Determine level based on scaled % thresholds
-  const level =
-    scaled <= 30 ? "low" : scaled <= 70 ? "medium" : "high";
-
-  if (jokes[type] && jokes[type][level]) {
-    return " " + pickRandom(jokes[type][level]);
-  }
-
-  return "";
+const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";
+if (!isJokeEnabled(req, type)) return "";
+if (!jokes[type] || !jokes[type][level]) return "";
+return " " + pickRandom(jokes[type][level]);
 }
 
 // Format a username: remove @ and lowercase for internal use
