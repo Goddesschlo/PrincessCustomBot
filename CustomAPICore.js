@@ -718,7 +718,7 @@ jokes.elementalItems = [
   "Breezy and light today 💨",
   "Shocking power surging ⚡",
   "Chill and steady ❄️",
-  "Mysterious
+  "Mysterious and cosmic. 🌌"
 ];
 
 // ===========================================
