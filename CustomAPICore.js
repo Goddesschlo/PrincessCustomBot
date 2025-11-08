@@ -22,23 +22,62 @@ return arr[Math.floor(Math.random() * arr.length)];
 
 // Check if jokes are enabled (global or per-type)
 function isJokeEnabled(req, type) {
-const global = req.query.jokes;
-if (global === "false") return false;
-if (global === "true") return true;
+  const global = req.query.jokes;
+  if (global === "false") return false;
+  if (global === "true") return true;
 
-const specific = req.query[`joke_${type}`];
-if (specific === "false") return false;
-if (specific === "true") return true;
+  const specific = req.query[`joke_${type}`];
+  if (specific === "false") return false;
+  if (specific === "true") return true;
 
-return true; // default to enabled
+  return true; // default to enabled
 }
 
-// Get a joke string for a given category and value
-function getJoke(req, type, value) {
-const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";
-if (!isJokeEnabled(req, type)) return "";
-if (!jokes[type] || !jokes[type][level]) return "";
-return " " + pickRandom(jokes[type][level]);
+/**
+ * Universal joke getter
+ * @param {object} req - request object
+ * @param {string} type - joke type / command name
+ * @param {number} value - numeric value to scale joke
+ * @param {object} [cfg] - optional {min, max, levels} config for stats/interactions
+ * @param {number} [index] - optional index for list-type commands
+ */
+function getJoke(req, type, value, cfg = null, index = null) {
+  if (!isJokeEnabled(req, type)) return "";
+
+  // If cfg is provided (stats or interactions)
+  if (cfg && typeof value === "number") {
+    const min = cfg.min ?? 0;
+    const max = cfg.max ?? 100;
+    const levels = cfg.levels ?? [30, 70];
+
+    // Normalize value to 0-100
+    const pct = ((value - min) / (max - min)) * 100;
+
+    let level;
+    if (pct <= levels[0]) level = "low";
+    else if (pct <= levels[1]) level = "medium";
+    else level = "high";
+
+    if (jokes[type] && jokes[type][level]) {
+      return " " + pickRandom(jokes[type][level]);
+    }
+
+    return "";
+  }
+
+  // If index is provided (list-type commands like animal/drink/colors)
+  if (index !== null) {
+    if (jokes[type] && jokes[type][index]) return " " + jokes[type][index];
+    return "";
+  }
+
+  // Fallback for numeric value without cfg (assume 0-100)
+  const level = value <= 30 ? "low" : value <= 70 ? "medium" : "high";
+  if (jokes[type] && jokes[type][level]) {
+    return " " + pickRandom(jokes[type][level]);
+  }
+
+  return "";
 }
 
 // Format a username: remove @ and lowercase for internal use
@@ -176,6 +215,7 @@ const specialUsers = {
 flufffaceyeti: {
 beard: "@FluffFaceYeti, your beard is majestic like a wizard!",
 hair: "@FluffFaceYeti, LUL You have no hair silly",
+daddy: "@Flufffaceyeti, is my ultimate daddy and I'm his good girl!"
 },
 sopranna: {
 theo: "@Sopranna, Theo knows who his mama is and gives her all his love!",
@@ -449,8 +489,8 @@ const auravibes = {
 // ===========================================
 // 🏴 PIRATE VIBES
 // ===========================================
-const pirateVibes = {
-  pirateVibes: {
+const piratevibes = {
+  piratevibes: {
     list: [
       "🏴‍☠️ Swashbuckler", "⚓ Captain", "🦜 Parrot Whisperer",
       "💰 Treasure Hunter", "🔥 Cannon Master", "🗺️ Navigator",
@@ -463,8 +503,8 @@ const pirateVibes = {
 // ===========================================
 // 🧙 WIZARD VIBES
 // ===========================================
-const wizardVibes = {
-  wizardVibes: {
+const wizardvibes = {
+  wizardvibes: {
     list: [
       "🪄 Apprentice", "✨ Sorcerer", "📜 Spellcaster", "🔮 Seer",
       "🔥 Pyromancer", "❄️ Cryomancer", "🌀 Warlock"
@@ -512,8 +552,8 @@ const powers = {
 // ===========================================
 // 🏴 PIRATE OUTFITS / ACCESSORIES
 // ===========================================
-const pirateOutfits = {
-  pirateOutfits: {
+const pirateoutfits = {
+  pirateoutfits: {
     list: [
       "🪖 Tricorn Hat", "🧥 Captain’s Coat", "🦜 Parrot Companion",
       "💰 Gold Earrings", "⚓ Anchor Tattoo", "🗡️ Cutlass", "🦴 Peg Leg"
@@ -525,8 +565,8 @@ const pirateOutfits = {
 // ===========================================
 // 🧙 WIZARD ITEMS / ACCESSORIES
 // ===========================================
-const wizardItems = {
-  wizardItems: {
+const wizarditems = {
+  wizarditems: {
     list: [
       "🪄 Wand", "📜 Spellbook", "🔮 Crystal Ball", "🧙 Robe",
       "🧪 Potion", "🪞 Mirror of Insight", "🧹 Flying Broom"
@@ -538,8 +578,8 @@ const wizardItems = {
 // ===========================================
 // 🌟 ELEMENTAL ITEMS / ACCESSORIES
 // ===========================================
-const elementalItems = {
-  elementalItems: {
+const elementalitems = {
+  elementalitems: {
     list: [
       "🔥 Fire Amulet", "💧 Water Orb", "🌱 Earth Ring", "💨 Air Pendant",
       "⚡ Lightning Bracelet", "❄️ Ice Crystal", "🌌 Void Charm"
@@ -551,8 +591,8 @@ const elementalItems = {
 // ===========================================
 // 🧘 AURA ACCESSORIES
 // ===========================================
-const auraItems = {
-  auraItems: {
+const auraitems = {
+  auraitems: {
     list: [
       "✨ Crystal Necklace", "🌸 Flower Crown", "🪐 Cosmic Ring",
       "🌊 Water Bracelet", "🔥 Flame Pendant", "🌙 Moon Charm"
@@ -584,7 +624,7 @@ const interactions = [
 // ===========================================
 
 const jokes = {
-animal: [
+  animal: [
     "You’re feeling regal and mighty today! 🦁",
     "Ferocious energy surging through you! 🐯",
     "Strong and grounded vibes. 🐻",
@@ -1347,7 +1387,9 @@ return pickRandom(outcomes);
 // ===========================================
 // 🧠 MAIN CODE ROUTE
 // ===========================================
-
+// ===========================================
+// 📅 DAILY STORAGE & COUNTERS
+// ===========================================
 const aspectsOfTheDay = { daddy: {}, pp: {}, bb: {}, princess: {}, goodgirl: {}, catmom: {}, stinker: {}, pirate: {}, captain: {}, animal: {}, drink: {} }; // storage for "of the Day" 
 const lock = {}; // lock mechanism 
 const statCounters = {}; // { username: { command: count } }
@@ -1826,11 +1868,11 @@ if (auravibes[type]) {
 // ===========================================
 // 🏴 PIRATE VIBES
 // ===========================================
-if (pirateVibes[type]) {
-  const cfg = pirateVibes[type];
+if (piratevibes[type]) {
+  const cfg = piratevibes[type];
   const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
   const chosen = cfg.list[index];
-  const joke = jokes.pirateVibes?.[index] || "";
+  const joke = jokes.piratevibes?.[index] || "";
 
   message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
   statCounters[sender] = statCounters[sender] || {};
@@ -1843,8 +1885,8 @@ if (pirateVibes[type]) {
 // ===========================================
 // 🧙 WIZARD VIBES
 // ===========================================
-if (wizardVibes[type]) {
-  const cfg = wizardVibes[type];
+if (wizardvibes[type]) {
+  const cfg = wizardvibes[type];
   const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
   const chosen = cfg.list[index];
   const joke = jokes.wizard?.[index] || "";
@@ -1911,11 +1953,11 @@ if (powers[type]) {
 // ===========================================
 // 🏴 PIRATE ACCESSORIES
 // ===========================================
-if (pirateOutfits[type]) {
-  const cfg = pirateOutfits[type];
+if (pirateoutfits[type]) {
+  const cfg = pirateoutfits[type];
   const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
   const chosen = cfg.list[index];
-  const joke = jokes.pirateOutfits?.[index] || "";
+  const joke = jokes.pirateoutfits?.[index] || "";
 
   message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
   statCounters[sender] = statCounters[sender] || {};
@@ -1928,11 +1970,11 @@ if (pirateOutfits[type]) {
 // ===========================================
 // 🧙 WIZARD ITEMS
 // ===========================================
-if (wizardItems[type]) {
-  const cfg = wizardItems[type];
+if (wizarditems[type]) {
+  const cfg = wizarditems[type];
   const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
   const chosen = cfg.list[index];
-  const joke = jokes.wizardItems?.[index] || "";
+  const joke = jokes.wizarditems?.[index] || "";
 
   message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
   statCounters[sender] = statCounters[sender] || {};
@@ -1945,11 +1987,11 @@ if (wizardItems[type]) {
 // ===========================================
 // 🌟 ELEMENTAL ITEMS
 // ===========================================
-if (elementalItems[type]) {
-  const cfg = elementalItems[type];
+if (elementalitems[type]) {
+  const cfg = elementalitems[type];
   const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
   const chosen = cfg.list[index];
-  const joke = jokes.elementalItems?.[index] || "";
+  const joke = jokes.elementalitems?.[index] || "";
 
   message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
   statCounters[sender] = statCounters[sender] || {};
@@ -1962,11 +2004,11 @@ if (elementalItems[type]) {
 // ===========================================
 // 🧘 AURA ACCESSORIES
 // ===========================================
-if (auraItems[type]) {
-  const cfg = auraItems[type];
+if (auraitems[type]) {
+  const cfg = auraitems[type];
   const index = generateValue(seed, type, cfg.list.length - 1, 0, sender);
   const chosen = cfg.list[index];
-  const joke = jokes.auraItems?.[index] || "";
+  const joke = jokes.auraitems?.[index] || "";
 
   message = `${senderDisplay}, your ${cfg.label} today is ${chosen}! ${joke}`;
   statCounters[sender] = statCounters[sender] || {};
@@ -1985,6 +2027,7 @@ const cfg = stats[type];
 value = generateValue(seed, type, cfg.max, cfg.min, sender);
 const space = spaceIf(cfg.unitSpace);
 message = `${senderDisplay}, your ${cfg.label} is ${value}${space}${cfg.unit} today!${getJoke(req, type, value)}`;
+
 statCounters[sender] = statCounters[sender] || {};
 statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
 commandCounters[type] = (commandCounters[type] || 0) + 1;
@@ -2159,32 +2202,41 @@ return res.send(message);
 // ===========================================
 // 🤝 INTERACTIONS
 // ===========================================
-
 if (interactions.includes(type)) {
-value = generateValue(seed, type, 100, 1, sender);
-const actionWord = type
-.replace("throwshoe", "threw a shoe at")
-.replace("fliptable", "flipped a table")
-.replace("highfive", "high-fived")
-.replace("love", "sent love to")
-.replace("bonk", "bonked")
-.replace("boop", "booped")
-.replace("hug", "hugged")
-.replace("kiss", "kissed")
-.replace("pat", "patted")
-.replace("slap", "slapped")
-.replace("spank", "spanked");
+  // Map action words for messaging
+  const actionWord = type
+    .replace("throwshoe", "threw a shoe at")
+    .replace("fliptable", "flipped a table")
+    .replace("highfive", "high-fived")
+    .replace("love", "sent love to")
+    .replace("bonk", "bonked")
+    .replace("boop", "booped")
+    .replace("hug", "hugged")
+    .replace("kiss", "kissed")
+    .replace("pat", "patted")
+    .replace("slap", "slapped")
+    .replace("spank", "spanked");
 
-if (!userRaw || sender === cleanUsername(userRaw)) {
-message = `${senderDisplay} tried to ${type} the air with ${value}% power!${getJoke(req, type, value)}`;
-} else {
-message = `${senderDisplay} ${actionWord} ${targetDisplay} with ${value}% power!${getJoke(req, type, value)}`;
-}
+  // Generate a random power value 1-100%
+  const value = generateValue(seed, type, 100, 1, sender);
 
-statCounters[sender] = statCounters[sender] || {};
-statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
-commandCounters[type] = (commandCounters[type] || 0) + 1;
-return res.send(message);
+  // Use the universal getJoke with a tempCfg for interactions
+  const tempCfg = { min: 1, max: 100, levels: [30, 70] };
+  const joke = getJoke(req, type, value, tempCfg);
+
+  // Compose the message depending on target
+  if (!userRaw || sender === cleanUsername(userRaw)) {
+    message = `${senderDisplay} tried to ${type} the air with ${value}% power!${joke}`;
+  } else {
+    message = `${senderDisplay} ${actionWord} ${targetDisplay} with ${value}% power!${joke}`;
+  }
+
+  // Update stats
+  statCounters[sender] = statCounters[sender] || {};
+  statCounters[sender][type] = (statCounters[sender][type] || 0) + 1;
+  commandCounters[type] = (commandCounters[type] || 0) + 1;
+
+  return res.send(message);
 }
 
 // ===========================================
