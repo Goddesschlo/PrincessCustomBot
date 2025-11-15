@@ -1885,7 +1885,7 @@ count !== 1 ? "s" : ""
 
 if (type === "captain") {
 const cfg = piracy.captain;
-value = generateValue(seed, type, cfg.max, cfg.min, target);
+value = generateValue(seed, type, cfg.max, cfg.min, sender);
 const space = spaceIf(cfg.unitSpace);
 
 if (value === 100 && !aspectsOfTheDay.captain[today]) {
@@ -1920,7 +1920,7 @@ winner
 
 if (type === "pirate") {
 const cfg = piracy.pirate;
-value = generateValue(seed, type, cfg.max, cfg.min, target);
+value = generateValue(seed, type, cfg.max, cfg.min, sender);
 const space = spaceIf(cfg.unitSpace);
 
 let level = "low";
@@ -1955,7 +1955,7 @@ winner
 
 if (type === "pp") {
   const cfg = stats.pp;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2046,7 +2046,7 @@ if (type === "bb") {
 
 if (type === "sugar") {
   const cfg = stats.sugar;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2080,7 +2080,7 @@ if (type === "sugarofday") {
 
 if (type === "karl") {
   const cfg = stats.karl;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2115,7 +2115,7 @@ if (type === "karlopfday") {
 
 if (type === "daddy") {
   const cfg = stats.daddy;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2150,7 +2150,7 @@ if (type === "dadofday") {
 
 if (type === "catmom") {
   const cfg = stats.catmom;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2185,7 +2185,7 @@ if (type === "catmomofday") {
 
 if (type === "stinker") {
   const cfg = stats.stinker;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2220,7 +2220,7 @@ if (type === "stinkerofday") {
 
 if (type === "princess") {
   const cfg = stats.princess;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   value = Math.round(value);
   const space = spaceIf(cfg.unitSpace);
 
@@ -2257,7 +2257,7 @@ if (type === "princessofday") {
 
 if (type === "goodgirl") {
   const cfg = stats.goodgirl;
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   value = Math.round(value);
   const space = spaceIf(cfg.unitSpace);
 
@@ -2623,7 +2623,7 @@ return res.send(message);
 
 if (stats[type]) {
   const cfg = stats[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2644,7 +2644,7 @@ if (stats[type]) {
 
 if (gym[type]) {
   const cfg = gym[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2665,7 +2665,7 @@ if (gym[type]) {
 
 if (love[type]) {
   const cfg = love[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2686,7 +2686,7 @@ if (love[type]) {
 
 if (hate[type]) {
   const cfg = hate[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2707,7 +2707,7 @@ if (hate[type]) {
 
 if (personality[type]) {
   const cfg = personality[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2728,7 +2728,7 @@ if (personality[type]) {
 
 if (emotions[type]) {
   const cfg = emotions[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2749,7 +2749,7 @@ if (emotions[type]) {
 
 if (skills[type]) {
   const cfg = skills[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2770,7 +2770,7 @@ if (skills[type]) {
 
 if (actions[type]) {
   const cfg = actions[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2791,7 +2791,7 @@ if (actions[type]) {
 
 if (hold[type]) {
   const cfg = hold[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2812,7 +2812,7 @@ if (hold[type]) {
 
 if (carry[type]) {
   const cfg = carry[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2833,7 +2833,7 @@ if (carry[type]) {
 
 if (piracy[type]) {
   const cfg = piracy[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
@@ -2854,7 +2854,7 @@ if (piracy[type]) {
 
 if (custombutt[type]) {
   const cfg = custombutt[type];
-  value = generateValue(seed, type, cfg.max, cfg.min, target);
+  value = generateValue(seed, type, cfg.max, cfg.min, sender);
   const space = spaceIf(cfg.unitSpace);
 
   let level = "low";
