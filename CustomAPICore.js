@@ -284,8 +284,8 @@ theo: "@Sopranna, Theo knows who his mama is and gives her all his love!",
 ebacon1_: {
 daddy: "@ebacon1_, is the ultimate daddy! #Papi#1",
 },
-goddesschlo: {
-goodgirl: "@misschlobee, is the best good girl ever and is a juicy little PWINCESS!",
+misschlobee: {
+goodgirl: "@MissChlobee, is the best good girl ever and is a juicy little PWINCESS!",
 },
 vikingchels: {
 fox: "@vikingchels, is the CUTEST fox with the cutest face and best booty!!",
@@ -305,12 +305,24 @@ dj: "@iliiiilililii, IS THE BEST DJ EVER! PogChamp",
 // ===========================================
 
 const specialInteractions = {
-  username1: {
-    username2: {
-      hug: {
+  flufffaceyeti: {
+    misschlobee: {
+      spank: {
         value: 10000,
         message:
-          "@{sender} absolutely cuddled @{target}'s face with a GOD-TIER {value}% hug! 🍑🔥",
+          "@{sender} absolutely DEMOLISHED @{target}'s butt with a GOD-TIER {value}% spank and called her his good girl as she squeaked with joy! 🍑🔥"
+      },
+    },
+    vikingchels: {
+      pat: {
+        value: 999999,
+        message:
+          "@{sender} unleashed a LEGENDARY head-pat storm on @{target}! 🌪️💖 {value}% PURE AFFECTION MODE ACTIVATED!"
+      },
+      boop: {
+        value: 999999,
+        message:
+          "@{sender} booped @{target}'s fluffy fox snoot 🦊💖 {value}% sweetness overload!"
       },
     },
   },
